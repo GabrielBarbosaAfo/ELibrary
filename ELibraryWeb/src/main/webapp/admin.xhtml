@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+    <h:head>
+        <title>Administração Biblioteca</title>
+        <style>
+            body { font-family: sans-serif; padding: 20px; background-color: #eef2f3; }
+            .painel { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            h2 { border-bottom: 2px solid #007bff; padding-bottom: 10px; color: #333; }
+            label { display: block; margin-top: 10px; font-weight: bold; }
+            input, select { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;}
+            .btn { margin-top: 15px; padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+            .btn:hover { background-color: #0056b3; }
+            .msg { color: green; font-weight: bold; padding: 10px; background: #d4edda; border-radius: 4px; }
+        </style>
+    </h:head>
+    <h:body>
+        <h1>Painel do Administrador</h1>
+        
+        <h:outputText value="#{adminMB.mensagem}" rendered="#{not empty adminMB.mensagem}" styleClass="msg" />
+        
+        <div class="painel">
+            <h2>📚 Cadastrar Novo Título</h2>
+            <h:form>
+                <label>Título:</label>
+                <h:inputText value="#{adminMB.novoLivro.titulo}" required="true" />
+                
+                <label>ISBN:</label>
+                <h:inputText value="#{adminMB.novoLivro.isbn}" required="true" />
+                
+                <label>Autor:</label>
+                <h:inputText value="#{adminMB.novoLivro.autor}" />
+                
+                <label>Editora:</label>
+                <h:inputText value="#{adminMB.novoLivro.editora}" />
+                
+                <h:commandButton value="Salvar Livro" action="#{adminMB.cadastrarLivro}" styleClass="btn" />
+            </h:form>
+        </div>
+
+        <div class="painel">
+            <h2>📖 Adicionar Cópia ao Estoque</h2>
+            <p>Selecione um livro existente para adicionar mais um exemplar físico.</p>
+            <h:form>
+                <label>Selecione o Livro:</label>
+                <h:selectOneMenu value="#{adminMB.idLivroParaAdicionarCopia}">
+                    <f:selectItem itemLabel="-- Selecione --" itemValue="" />
+                    <f:selectItems value="#{adminMB.todosLivros}" var="l" 
+                                   itemLabel="#{l.titulo} (ISBN: #{l.isbn})" itemValue="#{l.id}" />
+                </h:selectOneMenu>
+                
+                <h:commandButton value="Adicionar Exemplar" action="#{adminMB.adicionarCopiaExtra}" styleClass="btn" style="background-color: #28a745;" />
+            </h:form>
+        </div>
+        
+        <div class="painel" style="border-top: 4px solid #ff9800;">
+            <h2>👤 Cadastrar Novo Usuário</h2>
+            <h:form>
+                <label>Nome:</label>
+                <h:inputText value="#{adminMB.novoUsuario.nome}" required="true" />
+
+                <label>Matrícula (Login):</label>
+                <h:inputText value="#{adminMB.novoUsuario.matricula}" required="true" />
+
+                <label>Email:</label>
+                <h:inputText value="#{adminMB.novoUsuario.email}" required="true" />
+
+                <label>Senha:</label>
+                <h:inputSecret value="#{adminMB.novoUsuario.senhaHash}" required="true" />
+
+                <label>Tipo de Usuário:</label>
+                <h:selectOneMenu value="#{adminMB.novoUsuario.tipo}">
+                    <f:selectItems value="#{adminMB.tiposUsuario}" var="tipo" 
+                                   itemLabel="#{tipo}" itemValue="#{tipo}" />
+                </h:selectOneMenu>
+
+                <h:commandButton value="Salvar Usuário" action="#{adminMB.cadastrarUsuario}" 
+                                 styleClass="btn" style="background-color: #ff9800; color: white;" />
+            </h:form>
+        </div>
+
+        <h:link value="Voltar ao Login" outcome="login" /> | 
+        <h:link value="Ir para Dashboard (Visão do Usuário)" outcome="index" />
+    </h:body>
+</html>
