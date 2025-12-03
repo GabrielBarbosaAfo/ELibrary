@@ -68,7 +68,6 @@ public class Main {
                             livroSB.salvar(l);
                             System.out.println(">> Livro salvo!");
                             
-                            // Cria exemplar automático
                             Exemplar ex = new Exemplar();
                             ex.setLivro(l);
                             ex.setStatus(StatusExemplar.DISPONIVEL);

@@ -76,4 +76,15 @@ public class LivroSB implements LivroSBRemote {
         }
     }
     
+    @Override
+    public Long buscarIdPorISBN(String isbn) {
+        try {
+            return em.createQuery("SELECT l.id FROM Livro l WHERE l.isbn = :isbn", Long.class)
+                     .setParameter("isbn", isbn)
+                     .getSingleResult();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+    
 }
