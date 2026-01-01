@@ -1,0 +1,18 @@
+{
+  "livros": [
+    {
+      "isbn": "IMP-JSON-100",
+      "titulo": "Clean Code (Doacao JSON)",
+      "autor": "Robert C. Martin",
+      "anoPublicacao": 2008,
+      "quantidadeExemplares": 3
+    },
+    {
+      "isbn": "IMP-JSON-101",
+      "titulo": "Design Patterns (Doacao JSON)",
+      "autor": "Gang of Four",
+      "anoPublicacao": 1994,
+      "quantidadeExemplares": 2
+    }
+  ]
+}
