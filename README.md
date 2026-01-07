@@ -38,7 +38,7 @@ graph TD
     end
 
     subgraph "Persistência"
-        DB[("Banco de Dados<br/>PostgreSQL / H2")]
+        DB[("Banco de Dados<br/>PostgreSQL")]
     end
 
     %% Fluxos
