@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel Completo - E-Library</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; background-color: #f0f2f5; color: #333; }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 20px; }
+        
+        .container { display: flex; gap: 15px; flex-wrap: wrap; }
+        .column { flex: 1; min-width: 300px; }
+        
+        .card { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-top: 4px solid #ccc; }
+        .card.green { border-top-color: #28a745; }
+        .card.red { border-top-color: #dc3545; }
+        .card.purple { border-top-color: #6f42c1; }
+        .card.dark { border-top-color: #343a40; }
+
+        h2 { margin-top: 0; font-size: 1.1rem; display: flex; align-items: center; justify-content: space-between; }
+        
+        .form-group { margin-bottom: 10px; }
+        label { display: block; margin-bottom: 4px; font-weight: 600; font-size: 0.85rem; }
+        input { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        
+        button { padding: 8px; cursor: pointer; color: white; border: none; border-radius: 4px; font-size: 13px; width: 100%; margin-top: 4px; font-weight: 600; transition: 0.2s; }
+        button:hover { opacity: 0.9; }
+        
+        .btn-green { background-color: #28a745; }
+        .btn-red { background-color: #dc3545; }
+        .btn-purple { background-color: #6f42c1; }
+        .btn-blue { background-color: #007bff; }
+        .btn-orange { background-color: #fd7e14; }
+        .btn-gray { background-color: #6c757d; }
+
+        pre { background: #1e1e1e; color: #00ff00; padding: 10px; border-radius: 6px; overflow-x: auto; height: 600px; font-family: monospace; font-size: 12px; }
+        .status-line { font-weight: bold; margin-bottom: 5px; padding: 5px; border-radius: 4px; background: #e9ecef; }
+    </style>
+</head>
+<body>
+
+    <h1>📚 Painel de Testes E-Library</h1>
+
+    <div class="container">
+        
+        <div class="column">
+            <div class="card green">
+                <h2>1. Cadastro (Requisito POST)</h2>
+                
+                <div class="form-group" style="border-bottom: 1px dashed #ccc; padding-bottom: 10px; margin-bottom: 10px;">
+                    <label style="color:#007bff">Opção A: Via AJAX (Sem refresh)</label>
+                    <div class="form-group"><label>Título</label><input type="text" id="titulo" placeholder="Ex: Livro AJAX"></div>
+                    <div class="form-group"><label>ISBN</label><input type="text" id="isbn" placeholder="Ex: 978-AJAX-01"></div>
+                    <div class="form-group"><label>Autor</label><input type="text" id="autor" placeholder="Ex: Dev Java"></div>
+                    <button class="btn-green" onclick="cadastrarLivro()">💾 POST via JS</button>
+                </div>
+
+                <form action="http://localhost:8080/ELibraryWeb/api/livros" method="POST" target="_blank">
+                    <label style="color:#28a745">Opção B: Via HTML Form (Nativo)</label>
+                    <small>Abre nova aba para testar Redirect 303</small>
+                    <div class="form-group"><input type="text" name="titulo" placeholder="Ex: Livro Form Nativo" required></div>
+                    <div class="form-group"><input type="text" name="isbn" placeholder="Ex: 978-FORM-02" required></div>
+                    <div class="form-group"><input type="text" name="autor" placeholder="Ex: HTML Puro"></div>
+                    <input type="hidden" name="ano" value="2025"> <button type="submit" class="btn-green" style="background-color: #218838;">🚀 POST Nativo (Redirect)</button>
+                </form>
+            </div>
+
+            <div class="card green">
+                <h2>2. Consultas</h2>
+                <button class="btn-blue" onclick="listarLivros()">📜 Listar Todos</button>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card red">
+                <h2>3. Regras de Negócio (Erros)</h2>
+                <p style="font-size:0.8rem; color:#666;">Use o botão laranja para criar um livro "travado" (com exemplar emprestado) automaticamente.</p>
+                
+                <button class="btn-orange" onclick="gerarCenarioBloqueio()">⚡ Gerar Cenário de Erro</button>
+                
+                <hr style="border:0; border-top:1px dashed #ddd; margin: 15px 0;">
+
+                <div class="form-group">
+                    <label>Teste A: Transição Proibida (409)</label>
+                    <small>Tenta: DISPONIVEL ➔ EMPRESTADO</small>
+                    <div style="display:flex; gap:5px;">
+                        <input type="number" id="idExemplarErro" placeholder="ID Exemplar">
+                        <button class="btn-red" style="width:auto;" onclick="testarTransicaoIlegal()">Testar</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Teste B: Deleção Proibida (409)</label>
+                    <small>Tenta deletar livro com empréstimo ativo</small>
+                    <div style="display:flex; gap:5px;">
+                        <input type="number" id="idLivroErro" placeholder="ID Livro">
+                        <button class="btn-red" style="width:auto;" onclick="testarDelecao()">Testar</button>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+
+        <div class="column">
+            <div class="card purple">
+                <h2>4. GraphQL (Parte 2)</h2>
+                
+                <label>Dashboard (Agregação)</label>
+                <button class="btn-purple" onclick="gqlDashboard()">📊 Query Totais</button>
+                
+                <hr style="border:0; border-top:1px dashed #ddd; margin: 10px 0;">
+                
+                <label>Consultas</label>
+                <button class="btn-purple" onclick="gqlSimples()">🔍 Títulos (Simples)</button>
+                <button class="btn-purple" onclick="gqlNested()">📦 Livros + Exemplares (Nested)</button>
+                
+                <div class="form-group" style="margin-top:5px;">
+                    <div style="display:flex; gap:5px;">
+                        <input type="text" id="gqlIsbnBusca" placeholder="ISBN ex: 978-TESTE">
+                        <button class="btn-purple" style="width:auto;" onclick="gqlBuscaIsbn()">🔎 ISBN</button>
+                    </div>
+                </div>
+
+                <hr style="border:0; border-top:1px dashed #ddd; margin: 10px 0;">
+
+                <label>Mutações (Testar Erros)</label>
+                
+                <button class="btn-purple" style="background-color: #563d7c;" onclick="gqlMutationCadastrar()">
+                    ➕ Tentar Cadastrar Duplicado
+                </button>
+                <small style="color:#666; font-size:0.7rem;">(Usa ISBN fixo para gerar erro na 2ª vez)</small>
+
+                <div class="form-group" style="margin-top:8px;">
+                    <div style="display:flex; gap:5px;">
+                        <input type="number" id="gqlExId" placeholder="ID Exemplar">
+                        <button class="btn-purple" style="background-color: #563d7c; width:auto;" onclick="gqlMutationStatus()">🔄 Mudar Status</button>
+                    </div>
+                    <small style="color:#666; font-size:0.7rem;">(Tenta forçar status RESERVADO)</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <div class="card dark" style="height: calc(100% - 30px);">
+                <h2 style="color:#333;">📟 Terminal</h2>
+                <div id="statusLine" class="status-line">Pronto.</div>
+                <pre id="output">// Logs aparecerão aqui...</pre>
+                <button class="btn-gray" onclick="limparLog()">🧹 Limpar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API = 'http://localhost:8080/ELibraryWeb/api';
+        const GQL = 'http://localhost:8080/ELibraryWeb/graphql';
+
+        function log(data, status, method="REST") {
+            const out = document.getElementById('output');
+            const line = document.getElementById('statusLine');
+            
+            let text = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+            out.innerText = text;
+
+            if(status) {
+                let color = (status >= 200 && status < 300) ? 'green' : 'red';
+                if(status === 409) color = 'orange'; 
+                line.innerHTML = `[${method}] Status HTTP: <span style="color:${color}; font-weight:bold;">${status}</span>`;
+            }
+        }
+
+        function limparLog() {
+            document.getElementById('output').innerText = "// Limpo.";
+            document.getElementById('statusLine').innerText = "Pronto.";
+        }
+
+        // --- REST ---
+
+        function cadastrarLivro() {
+            const params = new URLSearchParams();
+            ['titulo', 'isbn', 'autor', 'ano'].forEach(id => params.append(id, document.getElementById(id).value));
+
+            fetch(`${API}/livros`, { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: params })
+            .then(async r => {
+                const txt = await r.text();
+                try { log(JSON.parse(txt), r.status); } catch(e) { log(txt, r.status); }
+            });
+        }
+
+        function listarLivros() {
+            fetch(`${API}/livros`).then(r => r.json()).then(d => log(d, 200));
+        }
+
+        // --- CENÁRIOS & REGRAS (O NOVO) ---
+
+        function gerarCenarioBloqueio() {
+            log("⚡ Gerando cenário: Criando Livro -> Exemplar -> Emprestando...", null);
+            let livroId, exId;
+            const isbnRand = "BLOCK-" + Math.floor(Math.random() * 10000);
+
+            // 1. Cria Livro
+            const params = new URLSearchParams();
+            params.append('titulo', 'Livro Travado ' + isbnRand);
+            params.append('isbn', isbnRand);
+            params.append('autor', 'Auto Generator');
+            params.append('ano', '2025');
+
+            fetch(`${API}/livros`, { method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: params })
+            .then(r => { livroId = r.url.split('/').pop(); return fetch(`${API}/livros/${livroId}/exemplares`, { method: 'POST' }); }) // 2. Exemplar
+            .then(r => r.json())
+            .then(ex => {
+                exId = ex.codigoInterno || ex.id;
+                // 3. Muda status até EMPRESTADO
+                return fetch(`${API}/exemplares/${exId}/status?novoStatus=RESERVADO`, { method: 'PUT' })
+                    .then(() => fetch(`${API}/exemplares/${exId}/status?novoStatus=EMPRESTADO`, { method: 'PUT' }));
+            })
+            .then(() => {
+                document.getElementById('idLivroErro').value = livroId;
+                document.getElementById('idExemplarErro').value = exId;
+                const msg = `✅ CENÁRIO CRIADO!\n\nLivro ID: ${livroId} (Preenchido no campo de Deleção)\nExemplar ID: ${exId} (Preenchido no campo de Transição)\n\nAgora o Livro está blindado contra deleção e o Exemplar está EMPRESTADO (tente mudar para Reservado para ver erro).`;
+                log(msg, 201);
+                alert("Cenário criado! Os IDs já foram preenchidos nos campos vermelhos.");
+            })
+            .catch(e => log("Erro ao gerar cenário: " + e, 0));
+        }
+
+        function testarTransicaoIlegal() {
+            const id = document.getElementById('idExemplarErro').value;
+            // Tenta voltar de EMPRESTADO para RESERVADO (Proibido) ou pular fases
+            // Vamos tentar o erro clássico: De DISPONIVEL (se for novo) para EMPRESTADO, 
+            // OU se usamos o gerador (ele está EMPRESTADO), tentar mudar para RESERVADO.
+            fetch(`${API}/exemplares/${id}/status?novoStatus=RESERVADO`, { method: 'PUT' })
+            .then(async r => {
+                const txt = await r.text();
+                log(`Tentativa de Transição Ilegal:\n${txt}`, r.status);
+            });
+        }
+
+        function testarDelecao() {
+            const id = document.getElementById('idLivroErro').value;
+            fetch(`${API}/livros/${id}`, { method: 'DELETE' })
+            .then(async r => {
+                const txt = await r.text();
+                log(`Tentativa de Deleção:\n${txt}`, r.status);
+            });
+        }
+
+        // --- GRAPHQL ---
+
+        async function doGQL(query) {
+            const r = await fetch(GQL, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({query}) });
+            const json = await r.json();
+            log(json, r.status, "GQL");
+        }
+
+        function gqlDashboard() {
+            doGQL(`query { dashboardBiblioteca { totalLivros totalExemplares totalDisponiveis totalEmprestados } }`);
+        }
+        function gqlSimples() {
+            doGQL(`query { livrosDisponiveis { id titulo autor } }`);
+        }
+        function gqlNested() {
+            doGQL(`query { livrosDisponiveis { titulo isbn exemplares { codigoInterno status } } }`);
+        }
+        function gqlFiltro() {
+            const nome = document.getElementById('gqlAutor').value;
+            doGQL(`query { livrosDisponiveis(filtro: { autor: "${nome}" }) { titulo autor } }`);
+        }
+        
+     // --- NOVAS FUNÇÕES PARA VALIDAR OS REQUISITOS FALTANTES ---
+
+        // Requisito: "Exemplo de consulta GraphQL esperada... livroByIsbn"
+        function gqlBuscaIsbn() {
+            const isbn = document.getElementById('gqlIsbnBusca').value || "9780132350884";
+            const query = `
+                query {
+                    livroByIsbn(isbn: "${isbn}") {
+                        titulo
+                        autor
+                        exemplares {
+                            codigoInterno
+                            status
+                        }
+                    }
+                }
+            `;
+            doGQL(query);
+        }
+
+        // Requisito: "A mutation cadastrarLivro deve validar unicidade do ISBN"
+        function gqlMutationCadastrar() {
+            const mutation = `
+                mutation {
+                    cadastrarLivro(input: {
+                        titulo: "Livro Teste GQL",
+                        isbn: "ISBN-UNICO-GQL",
+                        autor: "Tester",
+                        anoPublicacao: 2025
+                    }) {
+                        titulo
+                    }
+                }
+            `;
+            // Ao clicar a 1ª vez: Sucesso (Data). 
+            // Ao clicar a 2ª vez: Erro (Errors: "Já existe um livro...")
+            doGQL(mutation);
+        }
+
+        // Requisito: "Tentativas inválidas devem resultar em erro GraphQL apropriado"
+        // Tenta mudar o status de um exemplar via GraphQL
+        function gqlMutationStatus() {
+            const id = document.getElementById('gqlExId').value;
+            if(!id) { alert("Digite o ID do exemplar"); return; }
+            
+            // Tenta forçar para RESERVADO (se ele estiver Emprestado ou Disponivel, vai testar a regra)
+            const mutation = `
+                mutation {
+                    alterarStatusExemplar(exemplarId: "${id}", status: "RESERVADO") {
+                        codigoInterno
+                        status
+                    }
+                }
+            `;
+            doGQL(mutation);
+        }
+    </script>
+</body>
+</html>

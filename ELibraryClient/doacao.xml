@@ -1,0 +1,16 @@
+<biblioteca>
+   <livro>
+       <isbn>IMP-XML-001</isbn>
+       <titulo>Dom Casmurro (Doacao XML)</titulo>
+       <autor>Machado de Assis</autor>
+       <anoPublicacao>1899</anoPublicacao>
+       <quantidadeExemplares>2</quantidadeExemplares>
+   </livro>
+   <livro>
+       <isbn>IMP-XML-002</isbn>
+       <titulo>O Cortico (Doacao XML)</titulo>
+       <autor>Aluisio Azevedo</autor>
+       <anoPublicacao>1890</anoPublicacao>
+       <quantidadeExemplares>1</quantidadeExemplares>
+   </livro>
+</biblioteca>

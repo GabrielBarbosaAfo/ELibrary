@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html">
+    <h:head>
+        <title>Novo Livro</title>
+        <style>
+            body { font-family: sans-serif; padding: 20px; }
+            .form-group { margin-bottom: 15px; }
+            label { display: block; font-weight: bold; }
+            input { width: 300px; padding: 5px; }
+            .btn { padding: 10px 20px; background: #2196F3; color: white; border: none; cursor: pointer;}
+        </style>
+    </h:head>
+    <h:body>
+        <h1>Cadastrar Novo Livro</h1>
+        
+        <h:panelGroup rendered="#{not empty livroMB.mensagem}" style="display:block; padding:10px; margin-bottom:10px; background-color: #e0f7fa; border: 1px solid #006064; color: #006064; border-radius: 5px;">
+            <h:outputText value="#{livroMB.mensagem}" />
+        </h:panelGroup>
+
+        <h:form>
+            <div class="form-group">
+                <h:outputLabel value="Título:" />
+                <h:inputText value="#{livroMB.livro.titulo}" required="true" />
+            </div>
+            
+            <div class="form-group">
+                <h:outputLabel value="ISBN:" />
+                <h:inputText value="#{livroMB.livro.isbn}" required="true" />
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel value="Autor:" />
+                <h:inputText value="#{livroMB.livro.autor}" />
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel value="Editora:" />
+                <h:inputText value="#{livroMB.livro.editora}" />
+            </div>
+            
+            <div class="form-group">
+                <h:outputLabel value="Ano:" />
+                <h:inputText value="#{livroMB.livro.anoPublicacao}" />
+            </div>
+
+            <h:commandButton value="Salvar Livro" action="#{livroMB.salvar}" class="btn"/>
+            <br/><br/>
+            <h:link value="Voltar ao Dashboard" outcome="index" />
+        </h:form>
+    </h:body>
+</html>
