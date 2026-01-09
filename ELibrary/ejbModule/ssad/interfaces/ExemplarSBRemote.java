@@ -2,7 +2,11 @@ package ssad.interfaces;
 
 import jakarta.ejb.Remote;
 import ssad.modelo.Exemplar;
+<<<<<<< HEAD
 import ssad.modelo.StatusExemplar;
+=======
+
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
 import java.util.List;
 
 @Remote
@@ -10,6 +14,7 @@ public interface ExemplarSBRemote {
     void salvar(Exemplar exemplar);
     void remover(Long id);
     Exemplar buscarPorId(Long id);
+<<<<<<< HEAD
     List<Exemplar> listarPorLivro(Long idLivro);
     List<Exemplar> listarTodos();
     List<Exemplar> pesquisarPorTitulo(String titulo);
@@ -17,3 +22,10 @@ public interface ExemplarSBRemote {
     public void alterarStatus(Long id, String novoStatus);
     int contarPorStatus(StatusExemplar status);
 }
+=======
+    List<Exemplar> listarPorLivro(Long idLivro); 
+    List<Exemplar> listarTodos();
+    List<Exemplar> pesquisarPorTitulo(String titulo);
+    void disponibilizarExemplar(Long exemplarId);
+}
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d

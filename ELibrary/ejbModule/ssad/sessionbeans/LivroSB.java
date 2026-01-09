@@ -3,13 +3,19 @@ package ssad.sessionbeans;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+<<<<<<< HEAD
 import jakarta.persistence.NoResultException;
+=======
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
 import jakarta.persistence.PersistenceContext;
 import ssad.interfaces.CatalogStatusSBRemote;
 import ssad.interfaces.LivroSBRemote;
 import ssad.modelo.Livro;
+<<<<<<< HEAD
 import ssad.modelo.StatusExemplar;
 
+=======
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
 import java.util.List;
 
 @Stateless
@@ -31,6 +37,7 @@ public class LivroSB implements LivroSBRemote {
     }
 
     @Override
+<<<<<<< HEAD
     public void remover(Long id) throws Exception {
         // 1. REGRA DO PDF: Verifica se tem exemplares EMPRESTADOS
         // O PDF diz: "Um Livro não pode ser removido se possuir Exemplares emprestados."
@@ -49,6 +56,13 @@ public class LivroSB implements LivroSBRemote {
             em.remove(livro);
         } else {
             throw new Exception("Livro não encontrado para remoção.");
+=======
+    public void remover(Long id) {
+        Livro livro = em.find(Livro.class, id);
+        if (livro != null) {
+            em.remove(livro);
+            catalogStatus.atualizarCache(); 
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
         }
     }
 
@@ -75,7 +89,11 @@ public class LivroSB implements LivroSBRemote {
             "SELECT l FROM Livro l WHERE " +
             "(SELECT COUNT(e) FROM Exemplar e WHERE e.livro = l AND e.status = :status) = 0", 
             Livro.class)
+<<<<<<< HEAD
             .setParameter("status", StatusExemplar.DISPONIVEL)
+=======
+            .setParameter("status", ssad.modelo.StatusExemplar.DISPONIVEL)
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
             .getResultList();
     }
     
@@ -85,7 +103,11 @@ public class LivroSB implements LivroSBRemote {
             return em.createQuery("SELECT l FROM Livro l WHERE l.isbn = :isbn", Livro.class)
                     .setParameter("isbn", isbn)
                     .getSingleResult();
+<<<<<<< HEAD
         } catch (NoResultException e) { return null; }
+=======
+        } catch (jakarta.persistence.NoResultException e) { return null; }
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
     }
     
     @Override
@@ -103,6 +125,7 @@ public class LivroSB implements LivroSBRemote {
                  .setParameter("autor", "%" + autor.toLowerCase() + "%")
                  .getResultList();
     }
+<<<<<<< HEAD
     
     @Override
     public List<Livro> pesquisarComFiltros(String autor, StatusExemplar statusExemplar) {
@@ -128,4 +151,6 @@ public class LivroSB implements LivroSBRemote {
         
         return query.getResultList();
     }
+=======
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
 }

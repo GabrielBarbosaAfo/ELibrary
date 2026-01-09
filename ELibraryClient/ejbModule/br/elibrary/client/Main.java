@@ -19,6 +19,10 @@ public class Main {
         try {
             System.out.println(">>> [Main] Conectando ao servidor Wildfly...");
             
+<<<<<<< HEAD
+=======
+            // 1. Configuração JNDI (Comum para todos os testes)
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
             Properties p = new Properties();
             p.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
             p.put(Context.PROVIDER_URL, "remote+http://localhost:8080");
@@ -70,7 +74,11 @@ public class Main {
         try {
             System.out.println("\n--- INICIANDO TESTE PARTE 3 (IMPORTAÇÃO) ---");
             
+<<<<<<< HEAD
             // Lookup dos EJBs 
+=======
+            // Lookup dos EJBs necessários
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
             LivroSBRemote livroSB = (LivroSBRemote) ctx.lookup("ELibraryEAR/ELibrary/LivroSB!ssad.interfaces.LivroSBRemote");
             ExemplarSBRemote exemplarSB = (ExemplarSBRemote) ctx.lookup("ELibraryEAR/ELibrary/ExemplarSB!ssad.interfaces.ExemplarSBRemote");
 

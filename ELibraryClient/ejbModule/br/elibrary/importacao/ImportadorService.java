@@ -17,19 +17,25 @@ public class ImportadorService {
     private LivroSBRemote livroSB;
     private ExemplarSBRemote exemplarSB;
 
+<<<<<<< HEAD
     // --- CONTADORES PARA O RELATÓRIO ---
     private int qtdNovos = 0;
     private int qtdReutilizados = 0;
     private int qtdExemplares = 0;
     private int qtdErros = 0;
 
+=======
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
     public ImportadorService(LivroSBRemote livroSB, ExemplarSBRemote exemplarSB) {
         this.livroSB = livroSB;
         this.exemplarSB = exemplarSB;
     }
 
     public void processarArquivo(String caminhoArquivo) {
+<<<<<<< HEAD
         zerarContadores(); // Reseta para o novo arquivo
+=======
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
         System.out.println("\n>>> [IMPORTADOR] Lendo arquivo: " + caminhoArquivo);
         File arquivo = new File(caminhoArquivo);
         
@@ -48,7 +54,11 @@ public class ImportadorService {
                 listaParaImportar = wrapper.getLivros();
             } 
             else if (caminhoArquivo.endsWith(".json")) {
+<<<<<<< HEAD
                 ObjectMapper mapper = new ObjectMapper(); // Requer biblioteca Jackson!
+=======
+                ObjectMapper mapper = new ObjectMapper();
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
                 BibliotecaImportWrapper wrapper = mapper.readValue(arquivo, BibliotecaImportWrapper.class);
                 listaParaImportar = wrapper.getLivros();
             } else {
@@ -62,8 +72,12 @@ public class ImportadorService {
                     importarLivro(dto);
                 }
             }
+<<<<<<< HEAD
             
             imprimirRelatorio();
+=======
+            System.out.println(">>> Processo finalizado para: " + caminhoArquivo);
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
 
         } catch (Exception e) {
             System.err.println(">>> ERRO FATAL NA IMPORTAÇÃO: " + e.getMessage());
@@ -83,10 +97,15 @@ public class ImportadorService {
                 
                 livro = livroSB.buscarPorISBN(dto.getIsbn()); 
                 System.out.print("[NOVO LIVRO CADASTRADO] ");
+<<<<<<< HEAD
                 qtdNovos++;
             } else {
                 System.out.print("[LIVRO JÁ EXISTENTE] ");
                 qtdReutilizados++;
+=======
+            } else {
+                System.out.print("[LIVRO JÁ EXISTENTE] ");
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
             }
 
             int qtd = dto.getQuantidadeExemplares();
@@ -95,10 +114,15 @@ public class ImportadorService {
                     Exemplar ex = new Exemplar();
                     ex.setLivro(livro);
                     ex.setStatus(StatusExemplar.DISPONIVEL);
+<<<<<<< HEAD
                     // Gera um código único simples
                     ex.setCodigoInterno(dto.getIsbn() + "-CP-" + System.currentTimeMillis() + "-" + i);
                     exemplarSB.salvar(ex);
                     qtdExemplares++;
+=======
+                    ex.setCodigoInterno(dto.getIsbn() + "-CP-" + System.currentTimeMillis() + "-" + i);
+                    exemplarSB.salvar(ex);
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
                 }
                 System.out.println("-> + " + qtd + " exemplares adicionados.");
             } else {
@@ -107,6 +131,7 @@ public class ImportadorService {
 
         } catch (Exception e) {
             System.out.println("\n>>> ERRO ao importar item: " + e.getMessage());
+<<<<<<< HEAD
             qtdErros++;
         }
     }
@@ -125,4 +150,8 @@ public class ImportadorService {
         System.out.println("Erros/Rejeitados:                " + qtdErros);
         System.out.println("==============================================\n");
     }
+=======
+        }
+    }
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
 }

@@ -13,6 +13,7 @@ import ssad.modelo.Emprestimo;
 @Stateless
 public class EmprestimoSB implements EmprestimoSBRemote {
 
+<<<<<<< HEAD
     @PersistenceContext(unitName = "ELibrary") 
     private EntityManager em;
     
@@ -21,6 +22,17 @@ public class EmprestimoSB implements EmprestimoSBRemote {
     
     @Override
     public List<Emprestimo> listarPorUsuario(Long idUsuario) {
+=======
+    @PersistenceContext(unitName = "ELibrary") // Confirme se o nome é esse no seu persistence.xml
+    private EntityManager em;
+    
+    @EJB
+    private MensageiroSB mensageiro; // Injeta o carteiro
+
+    @Override
+    public List<Emprestimo> listarPorUsuario(Long idUsuario) {
+        // Busca empréstimos onde o atributo 'usuario' tem o ID passado
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
         return em.createQuery("SELECT e FROM Emprestimo e WHERE e.usuario.id = :idUsuario", Emprestimo.class)
                  .setParameter("idUsuario", idUsuario)
                  .getResultList();

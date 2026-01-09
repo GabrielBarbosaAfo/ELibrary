@@ -1,6 +1,7 @@
 package br.elibrary.importacao;
 
 import java.util.List;
+<<<<<<< HEAD
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
@@ -15,6 +16,17 @@ public class BibliotecaImportWrapper {
     @JsonProperty("livros") // Jackson lê "livros": [] no JSON
     private List<LivroImportDTO> livros;
 
+=======
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "biblioteca") 
+public class BibliotecaImportWrapper {
+    
+    private List<LivroImportDTO> livros;
+
+    @XmlElement(name = "livro") 
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
     public List<LivroImportDTO> getLivros() {
         return livros;
     }

@@ -21,7 +21,11 @@ public class ExemplarSB implements ExemplarSBRemote {
     @EJB private CatalogStatusSBRemote catalogStatus;
     
     @EJB
+<<<<<<< HEAD
     private MensageiroSB mensageiro; 
+=======
+    private MensageiroSB mensageiro; // Injeção do Produtor
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
 
     @Override
     public void salvar(Exemplar exemplar) {
@@ -52,6 +56,10 @@ public class ExemplarSB implements ExemplarSBRemote {
                  .getResultList();
     }
 
+<<<<<<< HEAD
+=======
+    // LISTA APENAS DISPONÍVEIS
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
     @Override
     public List<Exemplar> listarTodos() {
         return em.createQuery("SELECT e FROM Exemplar e WHERE e.status = :status", Exemplar.class)
@@ -72,6 +80,10 @@ public class ExemplarSB implements ExemplarSBRemote {
         Exemplar exemplar = em.find(Exemplar.class, exemplarId);
         if (exemplar == null) return;
 
+<<<<<<< HEAD
+=======
+        // 1. Verifica se estava tudo emprestado (count de disponiveis == 0)
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
         Long qtdDisponivel = em.createQuery(
             "SELECT COUNT(e) FROM Exemplar e WHERE e.livro = :livro AND e.status = :status", Long.class)
             .setParameter("livro", exemplar.getLivro())
@@ -80,9 +92,18 @@ public class ExemplarSB implements ExemplarSBRemote {
 
         boolean estavaZerado = (qtdDisponivel == 0);
 
+<<<<<<< HEAD
         exemplar.setStatus(StatusExemplar.DISPONIVEL);
         em.merge(exemplar);
 
+=======
+        // 2. Torna disponível
+        exemplar.setStatus(StatusExemplar.DISPONIVEL);
+        em.merge(exemplar);
+        System.out.println(">>> [ExemplarSB] Exemplar " + exemplarId + " agora está DISPONÍVEL.");
+
+        // 3. Se estava zerado, avisa a lista de espera
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
         if (estavaZerado) {
             verificarListaEspera(exemplar.getLivro());
         }
@@ -95,6 +116,7 @@ public class ExemplarSB implements ExemplarSBRemote {
             .getResultList();
 
         if (!espera.isEmpty()) {
+<<<<<<< HEAD
             String json = "{ \"evento\": \"LIVRO_DISPONIVEL\", \"titulo\": \"" + livro.getTitulo() + "\" }";
             mensageiro.enviarNotificacao(json);
         }
@@ -154,4 +176,15 @@ public class ExemplarSB implements ExemplarSBRemote {
             throw new IllegalArgumentException("Status inválido: " + novoStatusStr);
         }
     }
+=======
+            System.out.println(">>> [ExemplarSB] Lista de espera detectada! Enviando mensagem...");
+            
+            // Monta JSON simples
+            String json = "{ \"evento\": \"LIVRO_DISPONIVEL\", \"titulo\": \"" + livro.getTitulo() + "\" }";
+
+            // Envia para fila
+            mensageiro.enviarNotificacao(json);
+        }
+    }
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
 }
