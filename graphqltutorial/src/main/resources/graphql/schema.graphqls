@@ -1,0 +1,64 @@
+type Query {
+    # Retorna um livro pelo ISBN e todos os seus exemplares, com status
+    livroByIsbn(isbn: String!): Livro
+    
+    # Retorna apenas livros que possuam ao menos um exemplar DISPONIVEL
+    livrosDisponiveis(filtro: LivroFiltro): [Livro]
+    
+    # Retorna todos os empréstimos ativos de um usuário
+    emprestimosAtivosUsuario(usuarioId: ID!): [Emprestimo]
+    
+    # Consulta agregada para dashboard
+    dashboardBiblioteca: Dashboard
+}
+
+type Mutation {
+    cadastrarLivro(livro: LivroInput): Livro
+    alterarStatusExemplar(exemplarId: ID!, status: String!): Exemplar
+}
+
+type Livro {
+    id: ID
+    titulo: String
+    isbn: String
+    autor: String
+    categoria: String
+    anoPublicacao: Int
+    exemplares: [Exemplar]
+}
+
+type Exemplar {
+    id: ID
+    codigoInterno: String
+    status: String
+    livro: Livro   # <--- ADICIONE ESTA LINHA (O erro acontece porque ela falta)
+}
+
+type Emprestimo {
+    id: ID!
+    dataEmprestimo: String!
+    dataPrevDevolucao: String!
+    dataDevolucao: String
+    exemplar: Exemplar
+}
+
+type Dashboard {
+    totalLivros: Int
+    totalExemplares: Int
+    totalDisponiveis: Int
+    totalReservados: Int
+    totalEmprestados: Int
+}
+
+input LivroInput {
+    isbn: String
+    titulo: String
+    autor: String
+    categoria: String
+    anoPublicacao: Int
+}
+
+input LivroFiltro {
+    autor: String
+    status: String
+}

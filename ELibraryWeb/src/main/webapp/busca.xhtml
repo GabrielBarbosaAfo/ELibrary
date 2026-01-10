@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+    <h:head>
+        <title>Buscar Livros</title>
+        <style>
+            body { font-family: sans-serif; padding: 20px; background-color: #f4f4f9; }
+            table { width: 100%; border-collapse: collapse; background: white; }
+            th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+            .erro-msg { color: red; font-weight: bold; background: #ffe6e6; padding: 10px; display: block; margin-bottom: 15px; border-radius: 4px;}
+            
+            .search-box { margin-bottom: 20px; background: white; padding: 15px; border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+            .input-search { padding: 8px; width: 300px; border: 1px solid #ccc; border-radius: 4px; margin-right: 10px;}
+            .btn-search { padding: 8px 15px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;}
+        </style>
+    </h:head>
+    <h:body>
+        <h2>Acervo Disponível</h2>
+        
+        <h:outputText value="#{usuarioMB.aviso}" rendered="#{not empty usuarioMB.aviso}" styleClass="erro-msg"/>
+
+        <h:form>
+            <div class="search-box">
+                <h:outputLabel value="Buscar por Título: " style="font-weight:bold; margin-right: 10px;"/>
+                <h:inputText value="#{buscaMB.termoPesquisa}" styleClass="input-search" />
+                <h:commandButton value="Pesquisar" action="#{buscaMB.pesquisar}" styleClass="btn-search" />
+            </div>
+
+            <h:dataTable value="#{buscaMB.exemplaresDisponiveis}" var="ex">
+                <h:column>
+                    <f:facet name="header">Título</f:facet>
+                    #{ex.livro.titulo}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Autor</f:facet>
+                    #{ex.livro.autor}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Código</f:facet>
+                    #{ex.codigoInterno}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Status</f:facet>
+                    #{ex.status}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Ação</f:facet>
+                    <h:commandButton value="Emprestar" 
+                                     action="#{usuarioMB.realizarEmprestimo(ex.id)}" 
+                                     rendered="#{ex.status == 'DISPONIVEL'}" 
+                                     style="cursor: pointer; background: #28a745; color: white; border: none; padding: 5px 10px; border-radius: 3px;"/>
+                </h:column>
+            </h:dataTable>
+            
+            <br/><br/>
+            <h:commandLink value="Voltar ao Dashboard" 
+                           action="index?faces-redirect=true" 
+                           actionListener="#{usuarioMB.limparAviso}"
+                           style="font-size: 16px; font-weight: bold; color: #007bff; text-decoration: none;" />
+        </h:form>
+    </h:body>
+</html>

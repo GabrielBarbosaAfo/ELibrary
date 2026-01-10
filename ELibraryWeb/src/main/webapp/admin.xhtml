@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="jakarta.faces.html"
+      xmlns:f="jakarta.faces.core">
+    <h:head>
+        <title>Administração E-Library</title>
+        <style>
+            body { font-family: sans-serif; padding: 20px; background-color: #f0f0f0; }
+            .painel { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-top: 4px solid #2196F3;}
+            h2 { margin-top: 0; color: #333; }
+            label { display: block; margin-top: 10px; font-weight: bold; }
+            input[type=text], input[type=password] { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+            .btn { margin-top: 15px; padding: 10px 20px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; }
+            table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+            th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+            .msg { padding: 10px; background: #dff0d8; color: #3c763d; border-radius: 4px; margin-bottom: 10px; }
+        </style>
+    </h:head>
+    <h:body>
+        <h1>Painel Administrativo</h1>
+        
+        <h:form>
+            <h:commandButton value="← Voltar ao Login" action="login?faces-redirect=true" style="margin-bottom: 15px;"/>
+        </h:form>
+
+        <h:panelGroup rendered="#{not empty adminMB.mensagem}">
+            <div class="msg">#{adminMB.mensagem}</div>
+        </h:panelGroup>
+
+        <div class="painel">
+            <h2>📚 Gerenciar Livros</h2>
+            <h:form id="formLivro">
+                <label>Título:</label>
+                <h:inputText value="#{adminMB.novoLivro.titulo}" required="true" />
+                
+                <label>ISBN:</label>
+                <h:inputText value="#{adminMB.novoLivro.isbn}" required="true" />
+                
+                <label>Autor:</label>
+                <h:inputText value="#{adminMB.novoLivro.autor}" required="true" />
+                
+                <label>Ano:</label>
+                <h:inputText value="#{adminMB.novoLivro.anoPublicacao}" />
+                
+                <br/>
+                <h:commandButton value="Salvar Livro" action="#{adminMB.cadastrarLivro}" 
+                                 styleClass="btn" style="background-color: #4CAF50; color: white; margin-right: 10px;" />
+
+                <h:commandButton value="Cancelar Edição" action="#{adminMB.cancelarEdicao}" 
+                                 rendered="#{not empty adminMB.novoLivro.id}"
+                                 styleClass="btn" style="background-color: #9e9e9e; color: white;" />
+            </h:form>
+        </div>
+
+        <div class="painel" style="border-top: 4px solid #673AB7;">
+            <h2>📦 Estoque e Ações</h2>
+            <h:form>
+                <h:dataTable value="#{adminMB.todosLivros}" var="l">
+                    <h:column><f:facet name="header">ID</f:facet>#{l.id}</h:column>
+                    <h:column><f:facet name="header">Título</f:facet>#{l.titulo}</h:column>
+                    <h:column><f:facet name="header">ISBN</f:facet>#{l.isbn}</h:column>
+                    
+                    <h:column>
+                        <f:facet name="header">Ações</f:facet>
+                        
+                        <h:commandButton value="✏️ Editar" action="#{adminMB.prepararEdicao(l)}" 
+                                         style="margin-right: 5px; cursor: pointer; background: #FFC107; border:none; padding: 5px; border-radius: 4px;">
+                           <f:ajax render=":formLivro" /> 
+                        </h:commandButton>
+
+                        <h:commandButton value="🗑️ Excluir" action="#{adminMB.excluirLivro(l)}" 
+                                         onclick="return confirm('Tem certeza?');"
+                                         style="cursor: pointer; background: #F44336; color: white; border:none; padding: 5px; border-radius: 4px;">
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+
+                <hr/>
+                <h3>Adicionar Cópia Física</h3>
+                <label>Selecione o Livro:</label>
+                <h:selectOneMenu value="#{adminMB.idLivroParaAdicionarCopia}">
+                    <f:selectItem itemLabel="-- Selecione --" itemValue="" />
+                    <f:selectItems value="#{adminMB.todosLivros}" var="liv" 
+                                   itemLabel="#{liv.titulo}" itemValue="#{liv.id}" />
+                </h:selectOneMenu>
+                <h:commandButton value="Adicionar Exemplar" action="#{adminMB.adicionarCopiaExtra}" 
+                                 styleClass="btn" style="background-color: #673AB7; color: white;" />
+            </h:form>
+        </div>
+
+        <div class="painel" style="border-top: 4px solid #ff9800;">
+            <h2>👤 Cadastrar Usuário</h2>
+            <h:form>
+                <label>Nome:</label>
+                <h:inputText value="#{adminMB.novoUsuario.nome}" required="true" />
+                <label>Login:</label>
+                <h:inputText value="#{adminMB.novoUsuario.matricula}" required="true" />
+                <label>Email:</label>
+                <h:inputText value="#{adminMB.novoUsuario.email}" required="true" />
+                <label>Senha:</label>
+                <h:inputSecret value="#{adminMB.novoUsuario.senhaHash}" required="true" />
+                <label>Tipo:</label>
+                <h:selectOneMenu value="#{adminMB.novoUsuario.tipo}">
+                    <f:selectItems value="#{adminMB.tiposUsuario}" var="tipo" 
+                                   itemLabel="#{tipo}" itemValue="#{tipo}" />
+                </h:selectOneMenu>
+                <h:commandButton value="Salvar Usuário" action="#{adminMB.cadastrarUsuario}" 
+                                 styleClass="btn" style="background-color: #ff9800; color: white;" />
+            </h:form>
+        </div>
+    </h:body>
+</html>
