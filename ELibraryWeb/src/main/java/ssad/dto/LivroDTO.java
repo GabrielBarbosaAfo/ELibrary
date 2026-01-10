@@ -4,11 +4,21 @@ import ssad.modelo.Livro;
 import java.io.Serializable;
 
 public class LivroDTO implements Serializable {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Long id;
+<<<<<<< HEAD
+=======
+=======
+    private Long id;
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
     private String titulo;
     private String isbn;
     private String autor;

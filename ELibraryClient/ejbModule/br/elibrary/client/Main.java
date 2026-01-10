@@ -19,6 +19,13 @@ public class Main {
         try {
             System.out.println(">>> [Main] Conectando ao servidor Wildfly...");
             
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+            // 1. Configuração JNDI (Comum para todos os testes)
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
             Properties p = new Properties();
             p.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
             p.put(Context.PROVIDER_URL, "remote+http://localhost:8080");
@@ -70,14 +77,30 @@ public class Main {
         try {
             System.out.println("\n--- INICIANDO TESTE PARTE 3 (IMPORTAÇÃO) ---");
             
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+            // Lookup dos EJBs 
+=======
+            // Lookup dos EJBs necessários
+>>>>>>> 651da6e6746f03f28e9d376825981918c579544d
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
             LivroSBRemote livroSB = (LivroSBRemote) ctx.lookup("ELibraryEAR/ELibrary/LivroSB!ssad.interfaces.LivroSBRemote");
             ExemplarSBRemote exemplarSB = (ExemplarSBRemote) ctx.lookup("ELibraryEAR/ELibrary/ExemplarSB!ssad.interfaces.ExemplarSBRemote");
 
             ImportadorService importador = new ImportadorService(livroSB, exemplarSB);
             
+<<<<<<< HEAD
             System.out.println(">>> Processando 'doacao.xml'...");
             importador.processarArquivo("doacao.xml");
             
+=======
+            // Processa XML
+            System.out.println(">>> Processando 'doacao.xml'...");
+            importador.processarArquivo("doacao.xml");
+            
+            // Processa JSON
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
             System.out.println(">>> Processando 'doacao.json'...");
             importador.processarArquivo("doacao.json");
             
@@ -93,10 +116,19 @@ public class Main {
         try {
             System.out.println("\n--- INICIANDO TESTE PARTE 4 (MENSAGERIA) ---");
             
+<<<<<<< HEAD
+=======
+            // Lookup dos EJBs
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
             ExemplarSBRemote exemplarSB = (ExemplarSBRemote) ctx.lookup("ELibraryEAR/ELibrary/ExemplarSB!ssad.interfaces.ExemplarSBRemote");
             ListaEsperasSBRemote listaEsperaSB = (ListaEsperasSBRemote) ctx.lookup("ELibraryEAR/ELibrary/ListaEsperasSB!ssad.interfaces.ListaEsperasSBRemote");
             EmprestimoSBRemote emprestimoSB = (EmprestimoSBRemote) ctx.lookup("ELibraryEAR/ELibrary/EmprestimoSB!ssad.interfaces.EmprestimoSBRemote");
 
+<<<<<<< HEAD
+=======
+            // CENÁRIO 1: Lista de Espera
+            // Supõe-se Usuário ID 1 e Livro ID 1. Se der erro, verifique o banco.
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
             Long idUsuario = 1L;
             Long idLivro = 1L;
             Long idExemplar = 1L; 
@@ -113,6 +145,10 @@ public class Main {
             exemplarSB.disponibilizarExemplar(idExemplar);
             System.out.println("    Comando de devolução enviado.");
 
+<<<<<<< HEAD
+=======
+            // CENÁRIO 2: Atrasos
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
             System.out.println(">>> [3] Verificando atrasos (Disparo de notificações de atraso)...");
             emprestimoSB.verificarAtrasos();
             System.out.println("    Verificação solicitada.");

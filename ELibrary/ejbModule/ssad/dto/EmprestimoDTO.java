@@ -9,12 +9,20 @@ public class EmprestimoDTO implements Serializable {
     private String dataEmprestimo;
     private String dataPrevDevolucao;
     private String dataDevolucao;
+<<<<<<< HEAD
     private ExemplarDTO exemplar; 
+=======
+    private ExemplarDTO exemplar; // Reutiliza o DTO de Exemplar
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
 
     public EmprestimoDTO() {}
 
     public EmprestimoDTO(Emprestimo e) {
         this.id = e.getId();
+<<<<<<< HEAD
+=======
+        // Formata datas para String (padrão GraphQL costuma ser ISO-8601 ou String simples)
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         if (e.getDataEmprestimo() != null) 
@@ -30,6 +38,10 @@ public class EmprestimoDTO implements Serializable {
             this.exemplar = new ExemplarDTO(e.getExemplar());
     }
 
+<<<<<<< HEAD
+=======
+    // Getters e Setters
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getDataEmprestimo() { return dataEmprestimo; }

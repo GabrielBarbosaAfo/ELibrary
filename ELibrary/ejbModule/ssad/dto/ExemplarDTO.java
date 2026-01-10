@@ -11,6 +11,10 @@ public class ExemplarDTO implements Serializable {
     private Long id;
     private String codigoInterno;
     
+<<<<<<< HEAD
+=======
+    // Usamos String para facilitar a serialização JSON/GraphQL
+>>>>>>> 82f00c2176cc4cf14505665bf1521e78cb2c3c29
     private String status; 
     
     private Long idLivro;
